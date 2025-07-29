@@ -12,17 +12,12 @@ pipeline {
                 sh 'mvn test'
             }
         }
-        stage('SonarQube') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh "mvn clean verify sonar:sonar \
-                        -Dsonar.projectKey=compare-app"
-                }
-                timeout(time: 5, unit: 'MINUTES') {
-                    script {
-                        waitForQualityGate abortPipeline: true
-                  }
-                }
+        stage('SonarQube'){
+            steps{
+                sh "mvn clean verify sonar:sonar \
+                    -Dsonar.projectKey=compare-app \
+                    -Dsonar.host.url=http://35.180.225.248:9000 \
+                    -Dsonar.login=sqp_bef15ac51e7a97c31a7e45980ff3c30b6647b4c3"
             }
         }
     }
